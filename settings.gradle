@@ -1,0 +1,1 @@
+include ':app', ':aptProcessor', ':moudle1',':moudle3', ':base', ':router-annotation', ':router-compiler', ':router-core'
