@@ -25,7 +25,7 @@ public class RouteMeta{
      */
     private String group;
 
-    public static RouteMeta bulid(Type type, Class<?> destination, String path, String group){
+    public static RouteMeta build(Type type, Class<?> destination, String path, String group){
         return new RouteMeta(type,null,destination,path,group);
     }
 

@@ -1,3 +1,4 @@
+/*
 package com.moudle.aptprocessor;
 
 import com.google.auto.service.AutoService;
@@ -14,6 +15,7 @@ import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedSourceVersion;
@@ -24,9 +26,9 @@ import javax.tools.Diagnostic;
 import javax.tools.JavaFileManager;
 
 
-@AutoService(Process.class)
+@AutoService(Processor.class)
 //当前注解处理器能够处理的注解 代替getsSupportAnnotionType函数
-@SupportedAnnotationTypes({"com.moudle.moudleproduct.Route"})
+@SupportedAnnotationTypes({"com.moudle.router_annotation.Route"})
 //java版本代替getSupportSourceVersion函数
 @SupportedSourceVersion(SourceVersion.RELEASE_7)
 public class testProcessor extends AbstractProcessor {
@@ -64,8 +66,9 @@ public class testProcessor extends AbstractProcessor {
                 e.printStackTrace();
             }
         }
-        return true;
+        return false;
     }
 
 
 }
+*/

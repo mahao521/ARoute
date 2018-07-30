@@ -16,6 +16,12 @@ android {
         versionName cfg.versionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [ moduleName : project.getName() ]
+            }
+        }
+
         //添加一条 boolean类型的变量  可以直接在代码中使用 if（BuildConfig.isMoudle）
         buildConfigField("boolean", "isModule", String.valueOf(isModule))
 
@@ -56,4 +62,6 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    annotationProcessor project(':router-compiler')
+    implementation project(':base')
 }

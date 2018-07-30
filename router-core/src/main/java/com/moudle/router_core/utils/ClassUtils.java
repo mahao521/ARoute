@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,6 +30,7 @@ public class ClassUtils {
     /**
      * 获得程序所有的apk(instant run会产生很多split apk)
      */
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public static List<String> getSourcePaths(Context context) throws PackageManager
             .NameNotFoundException, IOException {
         ApplicationInfo applicationInfo = context.getPackageManager().getApplicationInfo(context
@@ -51,6 +54,7 @@ public class ClassUtils {
      * @throws IOException
      * @throws InterruptedException
      */
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public static Set<String> getFileNameByPackageName(Application context, final String
             packageName) throws PackageManager.NameNotFoundException, IOException,
             InterruptedException {

@@ -53,7 +53,7 @@ import com.moudle.router_annotation.RouteMeta;
 /**
  *  注册给哪些注解，替代@getSupportAnnotationTypes()函数
  */
-@SupportedAnnotationTypes(Constants.ANN_TYPE_ROUTE)
+@SupportedAnnotationTypes({"com.moudle.router_annotation.Route"})
 public class RouterProcessor  extends AbstractProcessor{
 
     /**
@@ -111,12 +111,15 @@ public class RouterProcessor  extends AbstractProcessor{
      */
     @Override
     public boolean process(Set<? extends TypeElement> set, RoundEnvironment roundEnvironment) {
+        mLog.i("Route class: " + set.toString());
         //使用了需要处理的注解
         if(!Utils.isEmpty(set)){
             //获取所有被Rote注解的元素的集合
+            mLog.i("Route class: 1" + set.toString());
             Set<? extends Element> routeElemts = roundEnvironment.getElementsAnnotatedWith(Route.class);
             //处理ROute注解
             if(!Utils.isEmpty(routeElemts)){
+                mLog.i("Route class: 2 " + set.toString());
                 try{
                     parseRoute(routeElemts);
                 }catch (Exception e){
@@ -173,19 +176,20 @@ public class RouterProcessor  extends AbstractProcessor{
         ParameterizedTypeName routers = ParameterizedTypeName.get(
                 ClassName.get(Map.class),
                 ClassName.get(String.class),
-                ParameterizedTypeName.get(ClassName.get(Class.class)),
-                WildcardTypeName.subtypeOf(ClassName.get(isRouteGroup))
+                ParameterizedTypeName.get(ClassName.get(Class.class),
+                WildcardTypeName.subtypeOf(ClassName.get(isRouteGroup)))
         );
         //参数 Map<String ,Class<? extends IRoutes>> routes
-        ParameterSpec rootParanSpec = ParameterSpec.builder(routers,"routers").build();
+        ParameterSpec rootParanSpec = ParameterSpec.builder(routers,"routes").build();
         //函数 public void loadInfo(Map<String,Class<? extends IRouteGroup>> routes> routes)
         MethodSpec.Builder loadIntoMethodOfRootBuilder = MethodSpec.methodBuilder(Constants.METHOD_LOAD_INTO)
                 .addAnnotation(Override.class)
                 .addModifiers(Modifier.PUBLIC)
                 .addParameter(rootParanSpec);
+        mLog.i("generatedRoot " + loadIntoMethodOfRootBuilder);
         //函数体
         for(Map.Entry<String,String> entry : rootMap.entrySet()){
-            loadIntoMethodOfRootBuilder.addStatement("routes.put($S,$T.class",entry.getKey()
+            loadIntoMethodOfRootBuilder.addStatement("routes.put($S,$T.class)",entry.getKey()
                     ,ClassName.get(Constants.PACKAGE_OF_GENERATE_FILE,entry.getValue()));
         }
         //生成$Root$类
@@ -243,7 +247,7 @@ public class RouterProcessor  extends AbstractProcessor{
             .addMethod(loadIntoMethodofGroupBuild.build())
             .build()
             ).build().writeTo(fileUtils);
-            mLog.i("generted RouteGroup" + Constants.PACKAGE_OF_GENERATE_FILE + "." + groupClassName);
+            mLog.i("generted RouteGroup " + Constants.PACKAGE_OF_GENERATE_FILE + "." + groupClassName);
             //分组名生成对应的Group类类名
             rootMap.put(groupName,groupClassName);
         }
